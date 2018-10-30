@@ -2,31 +2,107 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.do-it h1 ,.doing h1, .done h1, .abordet h1{
+ font-size: 21px;
+
+}
+.item{
+  text-align: center;
+  padding: 10px 5px;
+  margin: 0 auto;
+  width: 90%;
+  border-radius: 20px;
+  background-color: #cecece;
+}
+.item h6{
+ font-size: 14px;
+ margin: 10px auto;
+
+}
+.item p{
+ font-size: 12px;
+ overflow-x: hidden;
+ overflow-y: scroll;
+ max-height: 100px;
+
+}
+.item > button{
+  font-size: 12px;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 3px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.do-it{
+  min-width: 25%;
+  max-width: 25%;
+}
+.doing{
+  min-width: 25%;
+  max-width: 25%;
+}
+.done{
+  min-width: 25%;
+  max-width: 25%;
+}
+.abordet{
+  min-width: 25%;
+  max-width: 25%;
+}
+.add-task-button{
+  background-color: green;
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: none;
+}
+.kanban-lists{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.kanban-lists-top{
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 20px 0;
+  border-bottom: 1px solid #000000;
 }
+.kanban-lists-bottom{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.kanban-lists-top >div{
+  height: 70vh;
+  overflow-y: scroll;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.low{
+  border: 2px solid yellow;
+}
+.normal{
+  border: 2px solid green;
+}
+.high{
+    border: 2px solid red;
+}
+.delete-task-button{
+  background-color: red;
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: none;
+}
+.edit{
+  background-color: yellow !important;
+}
+.next{
+  background-color: green !important;
+}
+.abort{
+  background-color: orange !important;
+}
+.delete{
+  background-color: red !important;
+
+}
+.date{
+  overflow: hidden !important;
 }
