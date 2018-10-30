@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Kanban_Board/precache-manifest.8c5f4409936e4c083cc345df141896db.js"
+  "/KanbanBoard/precache-manifest.2d16e524f10a5babf7d4edccc2f97fa2.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/Kanban_Board/index.html", {
+workbox.routing.registerNavigationRoute("/KanbanBoard/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
