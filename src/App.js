@@ -582,7 +582,7 @@ changePriorityInDoig = (id, newPriority) => {
 
 
   render() {
-
+ console.log(window.localStorage);
     return (
       <div className="App">
       <div className= "container">
@@ -614,20 +614,15 @@ changePriorityInDoig = (id, newPriority) => {
 
        <button type="submit" className="add-task-button" onClick={this.addFieldIsActiveHeandler}> add task</button>
        <button type="submit" className="delete-task-button" onClick={this.removeFieldHeandler}> remove all task</button>
-
-
-
-
-        </div>
+       </div>
         {this.state.addFieldIsActive ? <AddTask
           addTastsToDoIt = {this.addTastsToDoIt}
           closeAddField = {this.addFieldIsActiveHeandler}
           />: <div></div>}
        </div>
-
       </div>
-      </div>
-    );
+    </div>
+   );
   }
 }
 

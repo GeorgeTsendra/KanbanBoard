@@ -3,12 +3,7 @@ import {ItemDoIt} from './items/item-do-it';
 
 
 export class DoIt extends Component {
-
-
-
-
-  render() {
-    console.log(this.props);
+ render() {
     const {
       nextOnClickfromToItToDoing,
       nextOnClickfromToItToAbort,
@@ -17,10 +12,8 @@ export class DoIt extends Component {
       changePriorityInDoIt
     } = this.props;
 
-
-    return (
-
-        <div className="col-md-3 do-it">
+  return (
+      <div className="col-md-3 do-it">
         <h1> Do It </h1>
          {doItData.map((value,index,arr)=>{
            return (
@@ -33,12 +26,7 @@ export class DoIt extends Component {
             />
            )
          })}
-
-
         </div>
-
-
-
-    );
+      );
   }
 }

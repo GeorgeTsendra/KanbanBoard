@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {EditPriority} from "../edit-priority"
-
+import {Button} from "./button/button"
 
 export class ItemDoing extends Component {
 
@@ -11,18 +11,13 @@ export class ItemDoing extends Component {
     }
   }
 
-
   editPriorityButtonHandler = () => {
     this.setState({
       editPriorityIsActive: !this.state.editPriorityIsActive,
     })
-    console.log(this.state.editPriorityIsActive);
   }
 
-
-
-
-  render() {
+render() {
     const {
       item,
       nextOnClickInUtemfromDoingToAbort,
@@ -40,30 +35,35 @@ export class ItemDoing extends Component {
      style = "item normal"
    }
 
-        return (
+      return (
           <div className={style}>
            <h6>{item.name} </h6>
            <p>{item.descriprion}</p>
            <p className="date">{item.date}</p>
-           <button type="submit" className=" edit-priority edit" onClick={()=>{this.editPriorityButtonHandler()}}>
-           Edit priority</button>
-
+           <Button
+            method={this.editPriorityButtonHandler}
+            itemId={item.id}
+            content='Edit priority'
+            className = "edit-priority edit"
+           />
            {this.state.editPriorityIsActive ? <EditPriority
              inItemChangePriorityInDoIt = {inItemChangePriorityInDoig}
              editPriorityButtonHandler = {this.editPriorityButtonHandler}
              itemId = {item.id}
              />: <div></div>}
-
-
-           <button type="submit" className="next"
-           onClick={()=>{nextOnClickInItemfromDoingToDone(item.id)}}
-           > Next </button>
-
-           <button type="submit" className="abort"
-           onClick={()=>{nextOnClickInUtemfromDoingToAbort(item.id)}}
-           > Abort </button>
+             <Button
+              method={nextOnClickInItemfromDoingToDone}
+              itemId={item.id}
+              content='Next'
+              className = "next"
+             />
+             <Button
+              method={nextOnClickInUtemfromDoingToAbort}
+              itemId={item.id}
+              content='Abort'
+              className = "abort"
+             />
            </div>
         );
-
-  }
+      }
 }

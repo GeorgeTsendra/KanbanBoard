@@ -34,7 +34,6 @@ id = () => {
 return '_' + Math.random().toString(36).substr(2, 9);
 };
 
-
 submitHendler =()=>{
 
   if (!this.state.selectValue) {
@@ -59,13 +58,9 @@ submitHendler =()=>{
 
 
   render() {
-
-
     return (
-
-        <div className="col-md-12 add-item">
-
-          <div className="col-md-12 top">
+      <div className="col-md-12 add-item">
+       <div className="col-md-12 top">
              <input type="text" value={this.state.inputValue}
               onChange={this.hendlerInputValue}
               placeholder="Task name"
@@ -75,21 +70,13 @@ submitHendler =()=>{
              <input name="r1" type="radio" value="3" onClick={this.hendlerRadioValue}/> Low
             </div>
             <div className="col-md-12 bottom">
-
-
             <textarea name="descriprion" rows="5" cols="50"
             value={this.state.textareaValue}
             onChange={this.hendlerTextareaValue} placeholder="Descriprion"></textarea>
             <button className="col-md-2" type="button" name="add"
             onClick={() => {this.submitHendler()}}>Add</button>
             </div>
-
-
-
-        </div>
-
-
-
-    );
-  }
+            </div>
+          );
+    }
 }

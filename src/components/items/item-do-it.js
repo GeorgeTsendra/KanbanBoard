@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {EditPriority} from "../edit-priority"
-
+import {Button} from "./button/button"
 export class ItemDoIt extends Component {
 
 constructor(props){
@@ -15,7 +15,6 @@ editPriorityButtonHandler = () => {
   this.setState({
     editPriorityIsActive: !this.state.editPriorityIsActive,
   })
-  console.log(this.state.editPriorityIsActive);
 }
 
 
@@ -30,8 +29,9 @@ editPriorityButtonHandler = () => {
       inItemChangePriorityInDoIt
     } = this.props;
 
-
     let style;
+    let contentInNext = "Next"
+    let contentInAbort = "Abort"
 
    if (item.priority == 3) {
       style = "item low"
@@ -43,40 +43,40 @@ editPriorityButtonHandler = () => {
    }
 
       return (
-
-          <div className={style}>
+        <div className={style}>
            <h6>{item.name} </h6>
            <p >{item.descriprion}</p>
-           <button type="submit " className="edit edit-description" onClick={()=>{editDescriptionsInDoItInItem(item.id)}}>
-             Edit descriprion</button>
+           <Button
+            method={editDescriptionsInDoItInItem}
+            itemId={item.id}
+            content='Edit descriprion'
+            className = "edit edit-description"
+           />
            <p className="date"> {item.date}</p>
-           <button type="submit" className=" edit-priority edit" onClick={()=>{this.editPriorityButtonHandler()}}>
-           Edit priority</button>
-
+           <Button
+            method={this.editPriorityButtonHandler}
+            itemId={item.id}
+            content='Edit priority'
+            className = "edit-priority edit"
+           />
            {this.state.editPriorityIsActive ? <EditPriority
              inItemChangePriorityInDoIt = {inItemChangePriorityInDoIt}
              editPriorityButtonHandler = {this.editPriorityButtonHandler}
              itemId = {item.id}
              />: <div></div>}
-
-           <button type="submit" className="next"
-           onClick={()=>{nextOnClickInItemfromToItToDoing(item.id)}}
-           > Next </button>
-
-           <button type="submit" className="abort"
-           onClick={()=>{nextOnClickInItemfromToItToAbort(item.id)}}
-           > Abort </button>
-
-
-
+             <Button
+              method={nextOnClickInItemfromToItToDoing}
+              itemId={item.id}
+              content={contentInNext}
+              className = {"next"}
+             />
+             <Button
+              method={nextOnClickInItemfromToItToAbort}
+              itemId={item.id}
+              content={contentInAbort}
+              className = {"abort"}
+             />
           </div>
-
-
-
-      );
-
-
-
-
-  }
-}
+        );
+      }
+    }

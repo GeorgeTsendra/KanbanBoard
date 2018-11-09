@@ -3,21 +3,14 @@ import {ItemDone} from './items/item-done';
 
 
 export class Done extends Component {
-
-
-
   render() {
-    console.log(this.props);
-
     const {
       doneData,
       onClickRemoveItemFromDone
     } = this.props;
 
-
-    return (
-
-        <div className="col-md-3 done">
+   return (
+    <div className="col-md-3 done">
         <h1> Done </h1>
          {doneData.map((value,index,arr)=>{
            return (
@@ -28,12 +21,7 @@ export class Done extends Component {
              />
            )
          })}
-
-
-        </div>
-
-
-
-    );
+         </div>
+       );
   }
 }
