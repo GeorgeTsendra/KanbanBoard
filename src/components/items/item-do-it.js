@@ -9,18 +9,12 @@ constructor(props){
     editPriorityIsActive: false,
   }
 }
-
-
-editPriorityButtonHandler = () => {
+ editPriorityButtonHandler = () => {
   this.setState({
     editPriorityIsActive: !this.state.editPriorityIsActive,
   })
 }
-
-
-
-
-  render() {
+render() {
     const {
       item,
       nextOnClickInItemfromToItToDoing,

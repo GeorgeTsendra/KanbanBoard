@@ -4,585 +4,101 @@ import {Doing} from "./components/doing"
 import {Done} from "./components/done"
 import {Aborted} from "./components/aborted"
 import {AddTask} from "./components/add-task"
+import removeFieldHeandler from "./actions/clearingAll"
+import addTastsToDoItFunc from "./actions/addTastsToDoItFunc"
+import fromToDoToDoingFunc from "./actions/fromToDoToDoingFunc"
+import fromDoingToDoneFunc from "./actions/fromDoingToDoneFunc"
+import fromDoingToAbortFunc from "./actions/fromDoingToAbortFunc"
+import fromDoItToAbortFunc from "./actions/fromDoItToAbortFunc"
+import removeItemFromAbortFunc from "./actions/removeItemFromAbortFunc"
+import removeItemFromDoneFunc from "./actions/removeItemFromDoneFunc"
+import editDescriptionsFunc from "./actions/editDescriptionsFunc"
+import componentWillMountFunc from "./actions/componentWillMountFunc"
+import changePriorityInDoItFunc from "./actions/changePriorityInDoItFunc"
+import changePriorityInDoigFunc from "./actions/changePriorityInDoigFunc"
 
 import './App.css';
 
 class App extends Component {
   constructor(props){
     super(props);
-
-    this.state = {
-     doIt : [],
-     doing:  [],
-     done:  [],
-     aborted:  [],
-     addFieldIsActive: false,
-  }
-
-  }
-  removeFieldHeandler = () => {
-    window.localStorage.clear()
-
-    this.setState({
+     this.state = {
       doIt : [],
       doing:  [],
       done:  [],
       aborted:  [],
-    })
+      addFieldIsActive: false,
   }
-
+}
+removeFieldHeandlerApp = () => {
+    this.setState(
+        removeFieldHeandler()
+    )
+}
 addFieldIsActiveHeandler= ()=>{
   this.setState({
     addFieldIsActive: !this.state.addFieldIsActive,
   })
 }
-
-
-  addTastsToDoIt = (value)=>{
-    let copyOfDoIt = [...this.state.doIt, value];
-    let doitNormal = []
-    let doitLow = []
-    let doitHight = []
-    copyOfDoIt.forEach((value)=>{
-      if (value.priority == 3) {
-        doitLow = [...doitLow, value]
-      }else if (value.priority == 2) {
-          doitHight = [...doitHight, value]
-      }else {
-        doitNormal = [...doitNormal, value]
-      }
-    })
-
-    doitNormal.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    doitLow.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    doitHight.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-
-
-    window.localStorage.setItem(value.id, JSON.stringify(value));
-
+addTastsToDoIt = (value)=>{
     this.setState({
-      doIt: [...doitHight, ...doitNormal, ...doitLow]
-    })
-    console.log(this.state.doIt);
+      doIt: addTastsToDoItFunc(value, this.state.doIt )
+  })
 }
-
-
-
-  fromToDoToDoing = (id) => {
-
-    let itemToChangePlacement = JSON.parse(localStorage.getItem(id))
-    localStorage.removeItem(id)
-    itemToChangePlacement.placement = "doing"
-    localStorage.setItem(id, JSON.stringify(itemToChangePlacement))
-
-    let elementToPushToDoing = []
-    let copyOfDoIt = [...this.state.doIt]
-    let indexToRemove = "";
-
-    copyOfDoIt.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        elementToPushToDoing = value
-        indexToRemove = index
-      }
-
-    })
-    copyOfDoIt.splice(indexToRemove, 1)
-    let doing = [...this.state.doing, elementToPushToDoing]
-    let doingNormal = []
-    let doingLow = []
-    let doingHight = []
-    doing.forEach((value)=>{
-      if (value.priority == 3) {
-        doingLow = [...doingLow, value]
-      }else if (value.priority == 2) {
-          doingHight = [...doingHight, value]
-      }else {
-        doingNormal = [...doingNormal, value]
-      }
-    })
-
-    doingNormal.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    doingLow.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    doingHight.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-
-    console.log(doingNormal);
-
-    this.setState({
-      doIt: [...copyOfDoIt],
-      doing: [...doingHight,...doingNormal, ...doingLow],
-    })
+fromToDoToDoing = (id) => {
+    this.setState(
+      fromToDoToDoingFunc(id, this.state)
+    )
  }
 
-  fromDoingToDone = (id) => {
-
-    let itemToChangePlacement = JSON.parse(localStorage.getItem(id))
-    localStorage.removeItem(id)
-    itemToChangePlacement.placement = "done"
-    localStorage.setItem(id, JSON.stringify(itemToChangePlacement))
-
-    let elementToPush = []
-    let copyOfArr = [...this.state.doing]
-    let indexToRemove = "";
-
-    copyOfArr.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        elementToPush = value
-        indexToRemove = index;
-      }
-
-    })
-    copyOfArr.splice(indexToRemove, 1)
-
-    let done = [...this.state.done, elementToPush]
-    let doneNormal = []
-    let doneLow = []
-    let doneHight = []
-    done.forEach((value)=>{
-      if (value.priority == 3) {
-        doneLow = [...doneLow, value]
-      }else if (value.priority == 2) {
-        doneHight = [...doneHight, value]
-      }else {
-        doneNormal = [...doneNormal, value]
-      }
-    })
-
-  doneNormal.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-    })
-    doneLow.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    doneHight.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-
-    this.setState({
-      doing: copyOfArr,
-      done: [...doneHight, ...doneNormal, ...doneLow],
-    })
+fromDoingToDone = (id) => {
+    this.setState(
+      fromDoingToDoneFunc(id, this.state)
+    )
   }
 
-  fromDoingToAbort = (id) => {
-    let itemToChangePlacement = JSON.parse(localStorage.getItem(id))
-    localStorage.removeItem(id)
-    itemToChangePlacement.placement = "aborted"
-    localStorage.setItem(id, JSON.stringify(itemToChangePlacement))
-
-
-    let elementToPush = []
-    let copyOfArr = [...this.state.doing]
-    let indexToRemove = "";
-
-    copyOfArr.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        elementToPush = value
-        indexToRemove = index;
-      }
-
-    })
-    copyOfArr.splice(indexToRemove, 1)
-    // ________________________________________________ABORT from Doing SORT ________________________________________
-    let aborted = [...this.state.aborted, elementToPush]
-    let abortedNormal = []
-    let abortedLow = []
-    let abortedHight = []
-    aborted.forEach((value)=>{
-      if (value.priority == 3) {
-        abortedLow = [...abortedLow, value]
-      }else if (value.priority == 2) {
-          abortedHight = [...abortedHight, value]
-      }else {
-        abortedNormal = [...abortedNormal, value]
-      }
-    })
-
-    abortedNormal.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    abortedLow.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    abortedHight.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-
-    this.setState({
-      doing: copyOfArr,
-      aborted: [...abortedHight, ...abortedNormal, ...abortedLow],
-    })
+fromDoingToAbort = (id) => {
+   this.setState(
+      fromDoingToAbortFunc(id, this.state),
+    )
   }
 
-  fromDoItToAbort = (id) => {
-    let itemToChangePlacement = JSON.parse(localStorage.getItem(id))
-    localStorage.removeItem(id)
-    itemToChangePlacement.placement = "aborted"
-    localStorage.setItem(id, JSON.stringify(itemToChangePlacement))
-
-
-
-    let elementToPush = []
-    let copyOfArr = [...this.state.doIt]
-    let indexToRemove = "";
-
-    copyOfArr.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        elementToPush = value
-        indexToRemove = index;
-      }
-
-    })
-    copyOfArr.splice(indexToRemove, 1)
-    // ________________________________________________ABORT from doit SORT ________________________________________
-    let aborted = [...this.state.aborted, elementToPush]
-    let abortedNormal = []
-    let abortedLow = []
-    let abortedHight = []
-    aborted.forEach((value)=>{
-      if (value.priority == 3) {
-        abortedLow = [...abortedLow, value]
-      }else if (value.priority == 2) {
-          abortedHight = [...abortedHight, value]
-      }else {
-        abortedNormal = [...abortedNormal, value]
-      }
-    })
-
-    abortedNormal.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    abortedLow.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    abortedHight.sort((a,b)=>{
-      if (a.date > b.date) return 1;
-      if (a.date < b.date) return -1;
-    })
-    this.setState({
-      doIt: copyOfArr,
-      aborted: [...abortedHight, ...abortedNormal, ...abortedLow],
-    })
+fromDoItToAbort = (id) => {
+    this.setState(
+      fromDoItToAbortFunc(id, this.state)
+    )
   }
-
-  removeItemFromDone = (id) => {
-    let newcopyOfArr = [...this.state.done]
-    let indexToRemoveById = "";
-
-
-    localStorage.removeItem(id)
-
-    newcopyOfArr.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        indexToRemoveById = index;
-      }
-    })
-
-    newcopyOfArr.splice(indexToRemoveById, 1)
-     this.setState({
-        done: [...newcopyOfArr]
-      })
-    }
-
-
-
-  removeItemFromAbort = (id) => {
-    let newcopyOfArr = [...this.state.aborted]
-    let indexToRemoveById = "";
-
-
-  localStorage.removeItem(id)
-
-
-
-    newcopyOfArr.forEach((value,index,arr)=>{
-      if (value.id === id) {
-        indexToRemoveById = index;
-      }
-    })
-
-    newcopyOfArr.splice(indexToRemoveById, 1)
-     this.setState({
-        aborted: [...newcopyOfArr]
-      })
-
-    }
-
-
+removeItemFromDone = (id) => {
+     this.setState(
+       removeItemFromDoneFunc(id, this.state)
+     )
+  }
+removeItemFromAbort = (id) => {
+     this.setState(
+       removeItemFromAbortFunc(id, this.state)
+     )
+   }
 editDescriptions = (id) =>{
-  let itemToChangeDescription = JSON.parse(localStorage.getItem(id))
-  let newDesk = prompt("Please, change desctiptions here", itemToChangeDescription.descriprion )
-  localStorage.removeItem(id)
-  itemToChangeDescription.descriprion = newDesk
-  localStorage.setItem(id, JSON.stringify(itemToChangeDescription))
-  let itemsInstate = [...this.state.doIt]
-    itemsInstate.forEach((value)=>{
-      if (value.id === id) {
-        value.descriprion = newDesk
-      }
-    })
-    this.setState({
-      doIt: [...itemsInstate]
-    })
-
+  this.setState({
+      doIt: editDescriptionsFunc(id, this.state)
+  })
 }
-
-
-componentWillMount(){
-  let dataInStorege = [];
-  let doit = [];
-  let doing = [];
-  let done = [];
-  let aborted = [];
-
-  for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-  dataInStorege = [...dataInStorege, JSON.parse(localStorage.getItem( localStorage.key( i )) )] ;
+ componentWillMount(){
+ this.setState(
+    componentWillMountFunc()
+ )
 }
-dataInStorege.forEach((value,index,arr)=>{
-  if (value.placement === "doit") {
-    doit = [...doit, value]
-  }else if (value.placement === "doing") {
-    doing = [...doing, value]
-  } else if (value.placement === "done") {
-    done = [...done, value]
-  } else if (value.placement === "aborted") {
-    aborted = [...aborted, value]
-  }
-})
-
-// ________________________________________________DOIT SORT ________________________________________
-let doitNormal = []
-let doitLow = []
-let doitHight = []
-doit.forEach((value)=>{
-  if (value.priority == 3) {
-    doitLow = [...doitLow, value]
-  }else if (value.priority == 2) {
-      doitHight = [...doitHight, value]
-  }else {
-    doitNormal = [...doitNormal, value]
-  }
-})
-
-doitNormal.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doitLow.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doitHight.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-// _________________________________________________________DOING SORT___________________________________________
-
-let doingNormal = []
-let doingLow = []
-let doingHight = []
-doing.forEach((value)=>{
-  if (value.priority == 3) {
-    doingLow = [...doingLow, value]
-  }else if (value.priority == 2) {
-      doingHight = [...doingHight, value]
-  }else {
-    doingNormal = [...doingNormal, value]
-  }
-})
-
-doingNormal.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doingLow.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doingHight.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-
-// ______________________________________________________DONE SORT___________________________________________
-let doneNormal = []
-let doneLow = []
-let doneHight = []
-done.forEach((value)=>{
-  if (value.priority == 3) {
-    doneLow = [...doneLow, value]
-  }else if (value.priority == 2) {
-    doneHight = [...doneHight, value]
-  }else {
-    doneNormal = [...doneNormal, value]
-  }
-})
-
-doneNormal.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doneLow.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-doneHight.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-// ______________________________________________________ABORT SORT___________________________________________
-let abortedNormal = []
-let abortedLow = []
-let abortedHight = []
-aborted.forEach((value)=>{
-  if (value.priority == 3) {
-    abortedLow = [...abortedLow, value]
-  }else if (value.priority == 2) {
-    abortedHight = [...abortedHight, value]
-  }else {
-    abortedNormal = [...abortedNormal, value]
-  }
-})
-
-abortedNormal.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-abortedLow.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-abortedHight.sort((a,b)=>{
-  if (a.date > b.date) return 1;
-  if (a.date < b.date) return -1;
-})
-
- this.setState({
-   doIt : [...doitHight, ...doitNormal, ...doitLow],
-   doing: [...doingHight,...doingNormal, ...doingLow],
-   done:  [...doneHight, ...doneNormal, ...doneLow],
-   aborted: [...abortedHight, ...abortedNormal, ...abortedLow],
+ changePriorityInDoIt = (id, newPriority) => {
+  this.setState({
+   doIt: changePriorityInDoItFunc(id, newPriority, this.state)
  })
 }
-
-
-
-changePriorityInDoIt = (id, newPriority) => {
- let itemToChange =  JSON.parse(window.localStorage.getItem(id));
- itemToChange.priority = newPriority;
- localStorage.setItem(id, JSON.stringify(itemToChange))
- let dataDoIt = [...this.state.doIt];
-  dataDoIt.forEach((value)=>{
-    if (value.id == id) {
-
-      value.priority = newPriority;
-
-    }
-  })
-  let doitNormal = []
-  let doitLow = []
-  let doitHight = []
-  dataDoIt.forEach((value)=>{
-    if (value.priority == 3) {
-      doitLow = [...doitLow, value]
-    }else if (value.priority == 2) {
-        doitHight = [...doitHight, value]
-    }else {
-      doitNormal = [...doitNormal, value]
-    }
-  })
-
-  doitNormal.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-  doitLow.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-  doitHight.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-
- this.setState({
-   doIt: [...doitHight, ...doitNormal,...doitLow]
+ changePriorityInDoig = (id, newPriority) => {
+   this.setState({
+   doing: changePriorityInDoigFunc(id,newPriority, this.state)
  })
 }
-
-
-changePriorityInDoig = (id, newPriority) => {
- let itemToChange =  JSON.parse(window.localStorage.getItem(id));
- itemToChange.priority = newPriority;
- localStorage.setItem(id, JSON.stringify(itemToChange))
- let dataDoing = [...this.state.doing];
-  dataDoing.forEach((value)=>{
-    if (value.id == id) {
-      value.priority = newPriority;
-    }
-  })
-
-  let doingNormal = []
-  let doingLow = []
-  let doingHight = []
-  dataDoing.forEach((value)=>{
-    if (value.priority == 3) {
-      doingLow = [...doingLow, value]
-    }else if (value.priority == 2) {
-        doingHight = [...doingHight, value]
-    }else {
-      doingNormal = [...doingNormal, value]
-    }
-  })
-
-  doingNormal.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-  doingLow.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-  doingHight.sort((a,b)=>{
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-  })
-
-
-
- this.setState({
-   doing: [...doingHight,...doingNormal,...doingLow]
- })
-}
-
-
-  render() {
- console.log(window.localStorage);
+render() {
     return (
       <div className="App">
       <div className= "container">
@@ -613,7 +129,7 @@ changePriorityInDoig = (id, newPriority) => {
        <div className="col-md-12 kanban-lists-bottom">
 
        <button type="submit" className="add-task-button" onClick={this.addFieldIsActiveHeandler}> add task</button>
-       <button type="submit" className="delete-task-button" onClick={this.removeFieldHeandler}> remove all task</button>
+       <button type="submit" className="delete-task-button" onClick={this.removeFieldHeandlerApp}> remove all tasks</button>
        </div>
         {this.state.addFieldIsActive ? <AddTask
           addTastsToDoIt = {this.addTastsToDoIt}

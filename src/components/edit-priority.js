@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Button} from "./items/button/button"
 
 export class EditPriority extends Component {
   constructor(props){
@@ -25,10 +26,15 @@ export class EditPriority extends Component {
              <input name="r1" type="radio" value="2" onClick={this.hendlerRadioValue}/> High
              <input name="r1" type="radio" value="1" onClick={this.hendlerRadioValue} /> Normal
              <input name="r1" type="radio" value="3" onClick={this.hendlerRadioValue}/> Low
-      </div>
-            <button type="submit" className="button-hendler" onClick={()=>{inItemChangePriorityInDoIt(itemId, this.state.selectValue) ; editPriorityButtonHandler()}}>
-             Confirm
-            </button>
+             <Button
+              method={inItemChangePriorityInDoIt}
+              itemId={itemId}
+              selectValue= {this.state.selectValue}
+              content="Confirm"
+              className= "button-hendler"
+              methodTwo={editPriorityButtonHandler}
+             />
+       </div>
       </div>
     );
   }

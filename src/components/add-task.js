@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Button} from "./items/button/button"
 import moment from "moment";
 
 export class AddTask extends Component {
@@ -27,7 +28,6 @@ hendlerRadioValue = (event)=>{
   this.setState({
    selectValue: event.target.value,
   })
-  console.log(this.state.selectValue);
 }
 
 id = () => {
@@ -55,8 +55,6 @@ submitHendler =()=>{
   })
   this.props.closeAddField()
 }
-
-
   render() {
     return (
       <div className="col-md-12 add-item">
@@ -73,8 +71,12 @@ submitHendler =()=>{
             <textarea name="descriprion" rows="5" cols="50"
             value={this.state.textareaValue}
             onChange={this.hendlerTextareaValue} placeholder="Descriprion"></textarea>
-            <button className="col-md-2" type="button" name="add"
-            onClick={() => {this.submitHendler()}}>Add</button>
+            <Button
+            method={this.submitHendler}
+            itemId=""
+            content="Add"
+            className= "col-md-2"
+            />
             </div>
             </div>
           );
